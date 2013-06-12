@@ -1,5 +1,9 @@
 Revision history for Perl extension API::DirectAdmin.
 
+0.09  Jun 12 2013	Andrey Kuzmin
+	-- Fix Bug #85672 https://rt.cpan.org/Public/Bug/Display.html?id=85672
+	-- Fix Bug #79514 https://rt.cpan.org/Public/Bug/Display.html?id=79514
+
 0.08  Aug 18 2012	Andrey Kuzmin
 	-- Add Modern::Perl to requires
 	-- Fix POD
@@ -10,8 +14,8 @@ Revision history for Perl extension API::DirectAdmin.
 	-- fix README
 
 0.06  Jan 29 2012      Andrey Kuzmin
-        -- Add 'list' and 'deldb' methods to API::DirectAdmin::Mysql
-        -- rewrite all 'list' methods
+    -- Add 'list' and 'deldb' methods to API::DirectAdmin::Mysql
+    -- rewrite all 'list' methods
 
 0.05  Jan 28 2012	Andrey Kuzmin
 	-- Add POD descriptions for all methods with examples
@@ -29,4 +33,4 @@ Revision history for Perl extension API::DirectAdmin.
 	-- rewtire tests
 
 0.01  Nov 28 2011	Andrey Kuzmin
-        -- first version
+    -- first version

@@ -7,7 +7,7 @@ use Data::Dumper;
 use Carp;
 use URI;
 
-our $VERSION = 0.08;
+our $VERSION = 0.09;
 our $DEBUG   = '';
 our $FAKE_ANSWER = '';
 
@@ -31,8 +31,8 @@ sub new {
         host        => '',
         ip          => '',
         debug       => $DEBUG,
-	allow_https => 1,
-	fake_answer => $FAKE_ANSWER,
+	    allow_https => 1,
+	    fake_answer => $FAKE_ANSWER,
         (@_)
     };
 
@@ -171,9 +171,9 @@ sub mk_full_query_string {
                                                         && $self->{host}
                                                         && $params->{command};
 
-    $self->{allow_https} = ( defined $params->{allow_https} && $params->{allow_https} == 0 ) ? 0 : 1;
+    my $allow_https = defined $params->{allow_https} ? $params->{allow_https} : $self->{allow_https};
     delete $params->{allow_https};
-    
+   
     my $host        = $self->{host};
     my $port        = $self->{port} || 2222;
     my $command     = delete $params->{command};
@@ -182,7 +182,7 @@ sub mk_full_query_string {
 
     $self->kill_start_end_slashes();
 
-    my $query_path = ( $self->{allow_https} == 1 ? 'https' : 'http' ) . "://$auth_user:$auth_passwd\@$host:$port/$command?";
+    my $query_path = ( $allow_https ? 'https' : 'http' ) . "://$auth_user:$auth_passwd\@$host:$port/$command?";
     return $query_path . $self->mk_query_string($params);
 }
 
@@ -419,7 +419,7 @@ Example:
     } );
     
     my $enable_result = $da->user->enable( {
-	select0 => 'username',
+	   select0 => 'username',
     } );
 
 =item change_password
@@ -496,9 +496,9 @@ Example:
     my $da = API::DirectAdmin->new(%auth);
     
     $result = $da->domain->add({
-	domain => 'newdomain.com',
-	php    => 'ON',
-	cgi    => 'ON',
+    	domain => 'newdomain.com',
+    	php    => 'ON',
+    	cgi    => 'ON',
     });
 
 =back
@@ -604,12 +604,21 @@ Add zone record to dns for domain. Available types of records: A, AAAA, NS, MX, 
 
 Example:
 
-    my $reult = $da->dns->add_record({
+    my $result = $da->dns->add_record({
         domain => 'domain.com', 
         type   => 'A',
         name   => 'subdomain', # will be "subdomain.domain.com." in record
         value  => '127.127.127.127',
     });
+
+Example with MX record:
+
+    my $result = $da->dns->add_record( { 
+        domain  => 'domain.com',
+        type    => 'MX',
+        name    => 'mx1',
+        value   => 10,
+    } );
 
 =item remove_record
 
@@ -622,6 +631,15 @@ Example:
         type   => 'A',
         name   => 'subdomain',
         value  => '127.127.127.127',
+    });
+
+Example with MX record:
+
+    my $result = $da->dns->remove_record({
+        domain => 'domain.com',
+        type   => 'mx',
+        name   => 'mx1',
+        value  => 10,
     });
 
 =back
@@ -647,7 +665,7 @@ This module requires these other modules and libraries:
 
 =head1 COPYRIGHT AND LICENCE
 
-Copyright (C) 2012 by Andrey "Chips" Kuzmin <chipsoid@cpan.org>
+Copyright (C) 2012-2013 by Andrey "Chips" Kuzmin <chipsoid@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,

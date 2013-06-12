@@ -69,7 +69,7 @@ is( $da->mk_full_query_string( {
         param1      => 'val1',
         param2      => 'val2',
         command     => 'CMD',
-	allow_https => 0, 
+	    allow_https => 0, 
     } ), 
     'http://'.$connection_params{auth_user}.':'.$connection_params{auth_passwd}.'@'.$connection_params{host}.':2222/CMD?param1=val1&param2=val2',
     $func
